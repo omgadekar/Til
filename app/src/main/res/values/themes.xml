@@ -16,11 +16,51 @@
         <item name="alertDialogTheme">@style/Theme.Til.Dialog</item>
     </style>
 
+    <!--
+      The container was themed here from the start, but the title and the buttons inside it
+      were left stock: Roboto Medium caps, and three identical gold text buttons with no
+      hierarchy on a screen whose primary action is a filled gold bar. Styling them at the
+      theme level fixes every dialog at once rather than one of the three.
+    -->
     <style name="Theme.Til.Dialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:windowTitleStyle">@style/DialogTitle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton.Positive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+    </style>
+
+    <style name="DialogTitle">
+        <item name="android:textAppearance">@style/DialogTitle.Text</item>
+    </style>
+
+    <style name="DialogTitle.Text" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <!-- Sentence case, because the tracked caps elsewhere are a label system, not a button one. -->
+    <style name="DialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- The one action that commits gets the fill, so the three stop looking interchangeable. -->
+    <style name="DialogButton.Positive">
+        <item name="android:background">@drawable/button_accent_compact</item>
+        <item name="android:textColor">@color/on_accent</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:layout_marginStart">8dp</item>
     </style>
 
     <!-- DatePickerDialog is a framework dialog, so it needs a framework theme of its own. -->

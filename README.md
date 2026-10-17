@@ -60,6 +60,15 @@ everything above it is warm — surface `#171613`, hairline `#272420` — so the
 the warm ink and the muted gold accent `#C8A961` lifted out of the ink swatches. A dead-neutral
 surface under warm text reads as a different material sitting on top of it.
 
+The dialogs were themed only as far as their container at first - background, accent and text
+colours - which left a stock Roboto Medium title, a bare underlined `EditText` and three
+identical all-caps gold text buttons sitting inside an app built from rounded filled surfaces
+with one filled primary action. The title and button styles are now set on
+`Theme.Til.Dialog`, so all three dialogs get sentence-case buttons with the committing one
+filled, and the caption field wears the same surface and focus ring as a settings row. The
+dialog background is a step lighter than the rows (`#1C1A17`) so it reads as floating above
+them; it had been left on the pre-rework neutral grey.
+
 Rows, buttons and the preview bezel are plain `<ripple>` and `<shape>` drawables rather than a
 UI library: one less dependency, and a stock component set would have fought the typographic
 look rather than carried it. Each one carries a `state_focused` layer as well as the ripple,
@@ -145,12 +154,23 @@ exactly what they were.
 Cinzel has no true lowercase — it is an inscriptional Roman face, so lowercase comes out as
 small caps. That is the typeface, not a bug.
 
-The fallback is still there, but it now asks rather than assumes: `WallpaperPainter.canDraw`
-tests the caption against the face with `Paint.hasGlyph`, and only a character the face really
-cannot draw sends the line to `sans-serif-light`. This matters because a `Typeface` built from
-a single file has no fallback chain behind it, so without the check a Cyrillic or emoji caption
-would land on the wallpaper as a row of .notdef boxes. The caption dialog carries the same test
-and shows a note the moment you type something the face cannot set.
+The fallback is still there, but it is now about coverage rather than about which font was
+picked: `WallpaperPainter.canDraw` checks the caption against the subset range, and only text
+that falls outside it goes to `sans-serif-light`. The caption dialog runs the same test as you
+type and shows its note only when it applies.
+
+It checks the range rather than asking the font, because `Paint.hasGlyph` does not answer that
+question — it resolves through the system fallback chain, so it returns true for Cyrillic
+against a Latin-only face and can never report a gap. `Canvas.drawText` falls back the same
+way, per character, which is the real reason to test at all: nothing here is at risk of
+drawing .notdef boxes, but a caption half in Bodoni and half in whatever the system supplies
+for the rest looks worse than the whole line set in one honest sans. The cost is that the
+range in `canDraw` has to be kept in step with the subsetting:
+
+```
+fonttools varLib.instancer <font> wght=<w> [opsz=<o>] -o inst.ttf
+fonttools subset inst.ttf --unicodes="U+0020-007E,U+00A0-00FF,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2026"   --layout-features+=kern --drop-tables+=DSIG,STAT --name-IDs='*'
+```
 
 The other eleven resolve system families by name through `Typeface.create`, so they cost nothing
 to ship and do have letters: Sans Thin / Light / Regular / Medium / Bold, Condensed Light /

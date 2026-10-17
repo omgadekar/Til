@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
@@ -13,6 +14,7 @@ import android.transition.TransitionManager
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -332,52 +334,56 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun editCaption() {
-        val pad = (22 * dp).toInt()
-        val input = EditText(this).apply {
-            setText(settings.caption)
-            hint = getString(R.string.label_hint)
-            // Dimmer than the default, so the placeholder cannot be read as real content.
-            setHintTextColor(ContextCompat.getColor(context, R.color.text_muted))
-            isSingleLine = true
+        val style = WallpaperPainter.style(settings.styleIndex)
+        val view = layoutInflater.inflate(R.layout.dialog_caption, null)
+        val input = view.findViewById<EditText>(R.id.caption_input)
+        val note = view.findViewById<TextView>(R.id.caption_note)
+
+        input.apply {
             filters = arrayOf(InputFilter.LengthFilter(Prefs.CAPTION_MAX_LENGTH))
+            // The face the caption will be set in, so the letterforms being chosen are shown.
+            typeface = WallpaperPainter.typeface(this@MainActivity, style)
+            setText(settings.caption)
+            isSingleLine = true
             setSelection(text.length)
-        }
-        val container = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(pad, pad / 2, pad, 0)
-            addView(input)
         }
 
         // The note is about what has actually been typed rather than about the font in the
-        // abstract, so it follows the field: it arrives the moment a character the face cannot
-        // draw is added, and leaves again when it goes.
-        val style = WallpaperPainter.style(settings.styleIndex)
-        val fallbackNote = TextView(this).apply {
-            text = getString(R.string.label_fallback_note, style.label)
-            textSize = 12f
-            setTextColor(ContextCompat.getColor(context, R.color.text_muted))
-            setPadding(0, pad / 2, 0, 0)
+        // abstract, so it follows the field: it arrives the moment a character the face
+        // cannot draw is added, and leaves again when it goes.
+        note.text = getString(R.string.label_fallback_note, style.label)
+        fun syncNote() {
+            val drawable = WallpaperPainter.canDraw(style, input.text.toString())
+            note.visibility = if (drawable) View.GONE else View.VISIBLE
+            // Falling back means the caption is no longer set in the face shown here.
+            input.typeface = if (drawable) {
+                WallpaperPainter.typeface(this, style)
+            } else {
+                Typeface.create("sans-serif-light", Typeface.NORMAL)
+            }
         }
-        container.addView(fallbackNote)
-
-        fun syncFallbackNote() {
-            val drawable = WallpaperPainter.canDraw(this, style, input.text.toString())
-            fallbackNote.visibility = if (drawable) View.GONE else View.VISIBLE
-        }
-        syncFallbackNote()
+        syncNote()
         input.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) = syncFallbackNote()
+            override fun afterTextChanged(s: Editable?) = syncNote()
             override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
             override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
         })
 
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle(R.string.label_dialog_title)
-            .setView(container)
+            .setView(view)
             .setPositiveButton(R.string.save) { _, _ -> saveCaption(input.text.toString()) }
             .setNeutralButton(R.string.label_clear) { _, _ -> saveCaption("") }
             .setNegativeButton(android.R.string.cancel, null)
-            .show()
+            .create()
+        // The dialog exists to be typed into, so it opens ready to type into. The field has
+        // to ask for focus once it is attached, or the keyboard has nothing to open against
+        // and the focused outline never appears.
+        dialog.window?.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+        )
+        dialog.setOnShowListener { input.requestFocus() }
+        dialog.show()
     }
 
     /** Read back through Prefs so the trim and length rules are applied in one place. */

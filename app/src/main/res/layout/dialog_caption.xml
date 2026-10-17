@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The caption field, built from the same parts as the screen behind it rather than left as a
+  bare AppCompat underline.
+
+  The field is set in the typeface the caption will actually be drawn in, with the tracking
+  the painter applies, so the letterforms and the spacing are the ones you are choosing. It
+  keeps the app surface colours rather than the chosen ink and backdrop: those are previewed
+  on the device above, and a field that renders ink-on-backdrop would be unreadable to type
+  into for exactly the pairing the contrast warning is there to catch.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="6dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="4dp">
+
+    <EditText
+        android:id="@+id/caption_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input_bg"
+        android:hint="@string/label_hint"
+        android:importantForAutofill="no"
+        android:inputType="textNoSuggestions"
+        android:letterSpacing="0.1"
+        android:minHeight="56dp"
+        android:paddingStart="16dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="14dp"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_muted"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/caption_note"
+        style="@style/RowNote"
+        android:layout_marginTop="12dp"
+        android:breakStrategy="balanced"
+        android:hyphenationFrequency="none"
+        android:lineSpacingExtra="2dp"
+        android:visibility="gone" />
+
+</LinearLayout>

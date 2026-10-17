@@ -97,22 +97,34 @@ object WallpaperPainter {
     }
 
     /**
-     * Whether [style] can draw every character of [text] itself.
-     *
-     * The bundled serifs are subset, so they carry Latin and common punctuation and little
-     * else. A Typeface built from a single file has no fallback chain behind it, so asking
-     * one for a character it does not have puts .notdef boxes on the wallpaper rather than
-     * quietly borrowing another face - the caption drops to [CAPTION_FALLBACK] instead.
-     * System families bring their own fallback, so they always answer true.
+     * The range the four bundled faces were subset to: Basic Latin, Latin-1 Supplement and
+     * the handful of typographic marks a caption is likely to want.
      */
-    fun canDraw(context: Context, style: Style, text: String): Boolean {
+    private val BUNDLED_MARKS = setOf(0x2013, 0x2014, 0x2018, 0x2019, 0x201C, 0x201D, 0x2026)
+
+    /**
+     * Whether [style] covers every character of [text] in its own outlines.
+     *
+     * This checks the subset range rather than asking the font, because Paint.hasGlyph does
+     * not answer that question: it resolves through the system fallback chain, so it returns
+     * true for Cyrillic against a Latin-only face and can never report a gap. Canvas.drawText
+     * falls back the same way, per character - which is the real reason to test at all. A
+     * caption half in Bodoni and half in whatever the system supplies for the rest is worse
+     * than the whole line in one honest sans, so the line moves to [CAPTION_FALLBACK] rather
+     * than being left to mix.
+     *
+     * The cost is that this range has to be kept in step with how the fonts are subset; the
+     * README records the command.
+     */
+    fun canDraw(style: Style, text: String): Boolean {
         if (style.fontRes == 0) return true
-        val paint = Paint().apply { typeface = typeface(context, style) }
         var i = 0
         while (i < text.length) {
             val codePoint = text.codePointAt(i)
-            val character = String(Character.toChars(codePoint))
-            if (character.isNotBlank() && !paint.hasGlyph(character)) return false
+            val covered = codePoint in 0x20..0x7E ||
+                codePoint in 0xA0..0xFF ||
+                codePoint in BUNDLED_MARKS
+            if (!covered) return false
             i += Character.charCount(codePoint)
         }
         return true
@@ -200,7 +212,7 @@ object WallpaperPainter {
             // Advance-width centring, which accounts for tracking; the ink box may not.
             textAlign = Paint.Align.CENTER
             letterSpacing = CAPTION_TRACKING
-            typeface = if (canDraw(context, style, caption)) {
+            typeface = if (canDraw(style, caption)) {
                 typeface(context, style)
             } else {
                 Typeface.create(CAPTION_FALLBACK, Typeface.NORMAL)
