@@ -6,17 +6,17 @@
       so the page matching the wallpaper's own palette is the point. This also drags the
       dialogs dark with it instead of flashing a white sheet over a black app.
     -->
-    <style name="Theme.DaysLeft" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.Til" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/bg</item>
         <item name="android:statusBarColor">@color/bg</item>
         <item name="android:navigationBarColor">@color/bg</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
-        <item name="alertDialogTheme">@style/Theme.DaysLeft.Dialog</item>
+        <item name="alertDialogTheme">@style/Theme.Til.Dialog</item>
     </style>
 
-    <style name="Theme.DaysLeft.Dialog" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="Theme.Til.Dialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
@@ -24,18 +24,18 @@
     </style>
 
     <!-- DatePickerDialog is a framework dialog, so it needs a framework theme of its own. -->
-    <style name="Theme.DaysLeft.DatePicker" parent="android:Theme.Material.Dialog.Alert">
+    <style name="Theme.Til.DatePicker" parent="android:Theme.Material.Dialog.Alert">
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:windowBackground">@drawable/dialog_bg</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
-        <item name="android:datePickerStyle">@style/Widget.DaysLeft.DatePicker</item>
+        <item name="android:datePickerStyle">@style/Widget.Til.DatePicker</item>
     </style>
 
     <!--
       The header ships with its own opaque band, which squares off the corners the rounded
       dialog background just rounded. Letting it through to the sheet keeps the shape.
     -->
-    <style name="Widget.DaysLeft.DatePicker" parent="android:Widget.Material.DatePicker">
+    <style name="Widget.Til.DatePicker" parent="android:Widget.Material.DatePicker">
         <item name="android:headerBackground">@android:color/transparent</item>
     </style>
 
@@ -155,7 +155,7 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="Widget.DaysLeft.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+    <style name="Widget.Til.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="thumbTint">@color/switch_thumb</item>
         <item name="trackTint">@color/switch_track</item>
     </style>

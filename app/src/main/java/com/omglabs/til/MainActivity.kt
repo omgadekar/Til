@@ -1,4 +1,4 @@
-package com.omglabs.daysleft
+package com.omglabs.til
 
 import android.animation.ValueAnimator
 import android.app.DatePickerDialog
@@ -305,7 +305,7 @@ class MainActivity : AppCompatActivity() {
         val shown = (settings.targetDate ?: LocalDate.of(today.year + 1, 1, 1)).coerceAtLeast(today)
         val dialog = DatePickerDialog(
             this,
-            R.style.Theme_DaysLeft_DatePicker,
+            R.style.Theme_Til_DatePicker,
             { _, year, month, day ->
                 val picked = LocalDate.of(year, month + 1, day)
                 Prefs.setTargetDate(this, picked)

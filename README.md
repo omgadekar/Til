@@ -52,7 +52,7 @@ Always dark, never DayNight: the window is a frame around a preview of the wallp
 page borrowing the wallpaper's own palette is the point. That also drags `AlertDialog` dark
 with it through `alertDialogTheme`, instead of flashing a white sheet over a black app;
 `DatePickerDialog` is a framework dialog so it takes a framework theme of its own
-(`Theme.DaysLeft.DatePicker`).
+(`Theme.Til.DatePicker`).
 
 The design tokens are `res/values/colors.xml`. The page stays exactly
 `Palette.DEFAULT_BACKDROP` (`#0A0A0A`), because the page is meant to read as the wallpaper;

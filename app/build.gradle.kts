@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.omglabs.daysleft"
+    namespace = "com.omglabs.til"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.omglabs.daysleft"
+        applicationId = "com.omglabs.til"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

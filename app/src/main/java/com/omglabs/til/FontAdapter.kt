@@ -1,4 +1,4 @@
-package com.omglabs.daysleft
+package com.omglabs.til
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable

@@ -1,4 +1,4 @@
-package com.omglabs.daysleft
+package com.omglabs.til
 
 import android.content.Context
 import java.time.LocalDate
@@ -19,7 +19,7 @@ data class WallpaperSettings(
 )
 
 object Prefs {
-    private const val FILE = "daysleft"
+    private const val FILE = "til"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_STYLE = "style"
     private const val KEY_INK = "ink_color"

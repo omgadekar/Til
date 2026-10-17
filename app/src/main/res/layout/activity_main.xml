@@ -254,7 +254,7 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/daily_switch"
-                style="@style/Widget.DaysLeft.Switch"
+                style="@style/Widget.Til.Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
