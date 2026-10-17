@@ -33,12 +33,12 @@
     <string name="label_hint">LAUNCH DAY</string>
     <string name="label_none">None</string>
     <string name="label_clear">Clear</string>
-    <string name="label_digits_only_note">%1$s has digits only, so this line is drawn in a light sans</string>
+    <string name="label_fallback_note">%1$s cannot draw some of these characters, so this line is drawn in a light sans</string>
 
     <string name="save">Save</string>
     <string name="low_contrast">These two colours are nearly the same. The number will be hard to see.</string>
     <string name="update_daily_note">Repaints just after midnight</string>
-    <string name="font_note_digits">Bundled serif, digits only</string>
+    <string name="font_note_bundled">Bundled serif</string>
     <string name="font_note_system">System typeface</string>
     <string name="check_mark">✓</string>
     <string name="end_date_hint_rolling">Rolls over</string>

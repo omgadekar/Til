@@ -126,19 +126,31 @@ under Accessibility. The warning still appears; it just appears rather than slid
 
 ## Typefaces
 
-Four display serifs are bundled in `app/src/main/res/font/`, **subset to digits only** so each
-costs 3-6 KB. All SIL Open Font License, so shipping them is fine:
+Four display serifs are bundled in `app/src/main/res/font/`, subset to Basic Latin, Latin-1
+and a few typographic marks, which costs 26-53 KB each (about 150 KB in all). All SIL Open
+Font License; the licence texts are in `licenses/`:
 
 - **Bodoni Moda** (default) - optical size 96 instance, hairline contrast, ball terminal on the 7
 - **Cinzel** - Roman inscriptional, carved-in-stone feel
 - **Cormorant Garamond** Light - most delicate, note its figures are semi-oldstyle so heights vary
 - **Playfair Display** - editorial, slightly sturdier than Bodoni
 
-Because they carry no letters, a caption set while one of these is selected is drawn in
-`sans-serif-light` instead — the dialog says so when it applies. A small tracked sans label over
-a large serif numeral is a normal editorial pairing, so this reads as a choice rather than a
-patch, but if you want the caption in Bodoni you need the unsubset font: drop the full TTF into
-`res/font/` and clear `digitsOnly` on that `Style`.
+The caption is drawn in whichever face the number uses, these four included. They were
+digits-only at first, which is why the caption used to fall back to a light sans whatever you
+picked; they were rebuilt from the same upstream versions (Bodoni Moda 2.005, Cinzel 2.000,
+Cormorant Garamond 4.001, Playfair Display 1.203), pinned to the same instances and subset
+wider. Every digit outline and advance width is unchanged, so the wallpaper numerals are
+exactly what they were.
+
+Cinzel has no true lowercase — it is an inscriptional Roman face, so lowercase comes out as
+small caps. That is the typeface, not a bug.
+
+The fallback is still there, but it now asks rather than assumes: `WallpaperPainter.canDraw`
+tests the caption against the face with `Paint.hasGlyph`, and only a character the face really
+cannot draw sends the line to `sans-serif-light`. This matters because a `Typeface` built from
+a single file has no fallback chain behind it, so without the check a Cyrillic or emoji caption
+would land on the wallpaper as a row of .notdef boxes. The caption dialog carries the same test
+and shows a note the moment you type something the face cannot set.
 
 The other eleven resolve system families by name through `Typeface.create`, so they cost nothing
 to ship and do have letters: Sans Thin / Light / Regular / Medium / Bold, Condensed Light /

@@ -32,29 +32,26 @@ object WallpaperPainter {
     /** Tracking on the caption. A small line over a huge number needs the air. */
     private const val CAPTION_TRACKING = 0.18f
 
-    /** The bundled serifs carry no letters, so their captions borrow this. */
+    /** Borrowed when the chosen face cannot draw what the caption says. */
     private const val CAPTION_FALLBACK = "sans-serif-light"
 
     /**
      * A typeface for the number.
      *
      * [fontRes] is a bundled font; when it is 0 the style is a system family resolved by name.
-     * [digitsOnly] marks the bundled display serifs, which are subset to 0-9 to keep them at a
-     * few KB each - they cannot draw a caption, so one falls back to [CAPTION_FALLBACK].
      */
     data class Style(
         val label: String,
         val fontRes: Int = 0,
         val family: String = "",
-        val weight: Int = Typeface.NORMAL,
-        val digitsOnly: Boolean = false
+        val weight: Int = Typeface.NORMAL
     )
 
     val STYLES = listOf(
-        Style("Bodoni Moda", fontRes = R.font.bodonimoda_display, digitsOnly = true),
-        Style("Cinzel", fontRes = R.font.cinzel_medium, digitsOnly = true),
-        Style("Cormorant Garamond", fontRes = R.font.cormorantgaramond_light, digitsOnly = true),
-        Style("Playfair Display", fontRes = R.font.playfairdisplay_medium, digitsOnly = true),
+        Style("Bodoni Moda", fontRes = R.font.bodonimoda_display),
+        Style("Cinzel", fontRes = R.font.cinzel_medium),
+        Style("Cormorant Garamond", fontRes = R.font.cormorantgaramond_light),
+        Style("Playfair Display", fontRes = R.font.playfairdisplay_medium),
         Style("Sans Thin", family = "sans-serif-thin"),
         Style("Sans Light", family = "sans-serif-light"),
         Style("Sans", family = "sans-serif"),
@@ -97,6 +94,28 @@ object WallpaperPainter {
         val a = mode?.physicalWidth ?: context.resources.displayMetrics.widthPixels
         val b = mode?.physicalHeight ?: context.resources.displayMetrics.heightPixels
         return min(a, b) to max(a, b)
+    }
+
+    /**
+     * Whether [style] can draw every character of [text] itself.
+     *
+     * The bundled serifs are subset, so they carry Latin and common punctuation and little
+     * else. A Typeface built from a single file has no fallback chain behind it, so asking
+     * one for a character it does not have puts .notdef boxes on the wallpaper rather than
+     * quietly borrowing another face - the caption drops to [CAPTION_FALLBACK] instead.
+     * System families bring their own fallback, so they always answer true.
+     */
+    fun canDraw(context: Context, style: Style, text: String): Boolean {
+        if (style.fontRes == 0) return true
+        val paint = Paint().apply { typeface = typeface(context, style) }
+        var i = 0
+        while (i < text.length) {
+            val codePoint = text.codePointAt(i)
+            val character = String(Character.toChars(codePoint))
+            if (character.isNotBlank() && !paint.hasGlyph(character)) return false
+            i += Character.charCount(codePoint)
+        }
+        return true
     }
 
     fun typeface(context: Context, style: Style): Typeface =
@@ -181,10 +200,10 @@ object WallpaperPainter {
             // Advance-width centring, which accounts for tracking; the ink box may not.
             textAlign = Paint.Align.CENTER
             letterSpacing = CAPTION_TRACKING
-            typeface = if (style.digitsOnly) {
-                Typeface.create(CAPTION_FALLBACK, Typeface.NORMAL)
-            } else {
+            typeface = if (canDraw(context, style, caption)) {
                 typeface(context, style)
+            } else {
+                Typeface.create(CAPTION_FALLBACK, Typeface.NORMAL)
             }
             textSize = bounds.height() * CAPTION_RATIO
         }

@@ -5,7 +5,9 @@ import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.HapticFeedbackConstants
@@ -346,15 +348,28 @@ class MainActivity : AppCompatActivity() {
             addView(input)
         }
 
+        // The note is about what has actually been typed rather than about the font in the
+        // abstract, so it follows the field: it arrives the moment a character the face cannot
+        // draw is added, and leaves again when it goes.
         val style = WallpaperPainter.style(settings.styleIndex)
-        if (style.digitsOnly) {
-            container.addView(TextView(this).apply {
-                text = getString(R.string.label_digits_only_note, style.label)
-                textSize = 12f
-                setTextColor(ContextCompat.getColor(context, R.color.text_muted))
-                setPadding(0, pad / 2, 0, 0)
-            })
+        val fallbackNote = TextView(this).apply {
+            text = getString(R.string.label_fallback_note, style.label)
+            textSize = 12f
+            setTextColor(ContextCompat.getColor(context, R.color.text_muted))
+            setPadding(0, pad / 2, 0, 0)
         }
+        container.addView(fallbackNote)
+
+        fun syncFallbackNote() {
+            val drawable = WallpaperPainter.canDraw(this, style, input.text.toString())
+            fallbackNote.visibility = if (drawable) View.GONE else View.VISIBLE
+        }
+        syncFallbackNote()
+        input.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) = syncFallbackNote()
+            override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+        })
 
         AlertDialog.Builder(this)
             .setTitle(R.string.label_dialog_title)

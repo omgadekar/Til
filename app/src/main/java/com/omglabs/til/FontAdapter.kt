@@ -12,8 +12,7 @@ import android.widget.TextView
  * The typeface list.
  *
  * Every row previews the live day count in that font, on the backdrop and in the ink already
- * chosen, because a name tells you nothing about what a numeral looks like — and the four
- * bundled serifs only have digits to show anyway.
+ * chosen, because a name tells you nothing about what a numeral looks like.
  */
 class FontAdapter(
     private val context: Context,
@@ -49,7 +48,7 @@ class FontAdapter(
             background = chip()
         }
 
-        val note = if (style.digitsOnly) R.string.font_note_digits else R.string.font_note_system
+        val note = if (style.fontRes != 0) R.string.font_note_bundled else R.string.font_note_system
         view.findViewById<TextView>(R.id.font_name).text = style.label
         view.findViewById<TextView>(R.id.font_note).setText(note)
         val chosen = position == settings.styleIndex
