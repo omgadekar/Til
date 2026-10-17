@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TIL</string>
+    <string name="set_now">Set wallpaper now</string>
+    <string name="update_daily">Update every day at midnight</string>
+    <string name="setting_wallpaper">Setting wallpaper</string>
+    <string name="wallpaper_set">Wallpaper set</string>
+    <string name="wallpaper_failed">Couldn\'t set the wallpaper. Try again.</string>
+    <string name="daily_on">Daily updates on</string>
+    <string name="daily_off">Daily updates off</string>
+    <string name="preview_desc">Wallpaper preview</string>
+    <string name="preview_desc_count">Wallpaper preview, %1$s</string>
+
+    <string name="section_countdown">Counting down to</string>
+    <string name="section_typeface">Typeface</string>
+    <string name="section_label_text">Text above the number</string>
+    <string name="section_number_colour">Number colour</string>
+    <string name="section_background_colour">Background</string>
+
+    <string name="custom">Custom</string>
+    <string name="pick_typeface">Typeface</string>
+    <string name="pick_number_colour">Number colour</string>
+    <string name="pick_background_colour">Background colour</string>
+    <string name="use_colour">Use colour</string>
+    <string name="hex_hint">#RRGGBB</string>
+    <string name="picker_desc">Colour picker: saturation and brightness square above a hue bar</string>
+
+    <string name="new_year_target">New Year, every year</string>
+    <string name="use_new_year">Use New Year</string>
+    <string name="end_date_fixed">%1$s</string>
+
+    <string name="label_dialog_title">Text above the number</string>
+    <string name="label_hint">LAUNCH DAY</string>
+    <string name="label_none">None</string>
+    <string name="label_clear">Clear</string>
+    <string name="label_digits_only_note">%1$s has digits only, so this line is drawn in a light sans</string>
+
+    <string name="save">Save</string>
+    <string name="low_contrast">These two colours are nearly the same. The number will be hard to see.</string>
+    <string name="update_daily_note">Repaints just after midnight</string>
+    <string name="font_note_digits">Bundled serif, digits only</string>
+    <string name="font_note_system">System typeface</string>
+    <string name="check_mark">✓</string>
+    <string name="end_date_hint_rolling">Rolls over</string>
+    <string name="end_date_hint_fixed">Fixed</string>
+    <string name="target_reached">Target date reached</string>
+
+    <!--
+      Spoken labels. The rows are ViewGroups, so without a description of their own a screen
+      reader reads their children as loose fragments: the value with no idea what it sets.
+    -->
+    <string name="a11y_row">%1$s, %2$s</string>
+    <string name="a11y_state_on">On</string>
+    <string name="a11y_state_off">Off</string>
+    <!-- Both quick-pick rows end in a button labelled only "Custom". -->
+    <string name="a11y_custom_ink">Custom number colour</string>
+    <string name="a11y_custom_bg">Custom background colour</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d day left</item>
+        <item quantity="other">%d days left</item>
+    </plurals>
+</resources>

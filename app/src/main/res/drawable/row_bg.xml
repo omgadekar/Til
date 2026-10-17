@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Ripple for touch, a gold hairline for keyboard focus. Without the focused item the only
+  feedback a D-pad or keyboard user gets is the ripple, which they never trigger.
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#22FFFFFF">
+    <item>
+        <selector>
+            <item android:state_focused="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/surface" />
+                    <corners android:radius="16dp" />
+                    <stroke android:width="1dp" android:color="@color/accent" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/surface" />
+                    <corners android:radius="16dp" />
+                    <stroke android:width="1dp" android:color="@color/hairline" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

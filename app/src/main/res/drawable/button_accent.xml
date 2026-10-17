@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#33000000">
+    <item>
+        <selector>
+            <!--
+              Busy, not unavailable: the button keeps its shape and its dark label and only
+              loses some of its gold, so "Setting wallpaper" still reads while it is working.
+            -->
+            <item android:state_enabled="false">
+                <shape android:shape="rectangle">
+                    <solid android:color="#7A6840" />
+                    <corners android:radius="16dp" />
+                </shape>
+            </item>
+            <!-- Focus lifts the fill rather than ringing it: a ring on gold reads as damage. -->
+            <item android:state_focused="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/accent_hi" />
+                    <corners android:radius="16dp" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/accent" />
+                    <corners android:radius="16dp" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

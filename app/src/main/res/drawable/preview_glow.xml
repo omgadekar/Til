@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A soft gold bloom behind the device, in the accent already used elsewhere.
+
+  The page is one flat tone from top to bottom, which leaves the preview sitting on nothing.
+  This is the only light source on the page, and it sits behind the one thing that matters.
+
+  Dithered: the fade spans about ten levels of an almost black page, so without it the
+  steps land far enough apart to read as rings on an OLED in a dark room.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:dither="true"
+    android:shape="oval">
+    <gradient
+        android:centerColor="#10C8A961"
+        android:centerX="0.5"
+        android:centerY="0.5"
+        android:endColor="#00C8A961"
+        android:gradientRadius="170dp"
+        android:startColor="#26C8A961"
+        android:type="radial" />
+</shape>

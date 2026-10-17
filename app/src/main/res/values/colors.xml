@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Off-black, not #000000: the launcher icon sits on the same page tone as the app. -->
+    <color name="ic_launcher_background">#0A0A0A</color>
+
+    <!--
+      One grey family, all of it warm.
+
+      The ink, the accent and the default wallpaper backdrop are warm, so dead-neutral
+      surfaces read as a different material sitting on top of them. Everything above the
+      page carries a few points of red and yellow; `bg` alone stays exactly
+      Palette.DEFAULT_BACKDROP, because the page is meant to be the wallpaper.
+    -->
+    <color name="bg">#0A0A0A</color>
+    <color name="surface">#171613</color>
+    <color name="surface_pressed">#211F1B</color>
+    <color name="hairline">#272420</color>
+
+    <color name="text_primary">#F0EDE8</color>
+    <color name="text_secondary">#8A8782</color>
+    <color name="text_muted">#5F5C58</color>
+
+    <!-- Muted gold, picked from the ink swatches so the UI and the wallpaper agree. -->
+    <color name="accent">#C8A961</color>
+    <!-- One step up, for the focused and hovered states of the accent button only. -->
+    <color name="accent_hi">#D8BC7A</color>
+    <color name="on_accent">#0A0A0A</color>
+    <color name="warning">#E0A030</color>
+
+    <color name="switch_thumb_off">#6B6763</color>
+    <color name="switch_track_off">#2E2B27</color>
+</resources>

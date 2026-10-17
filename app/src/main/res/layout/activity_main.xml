@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Order is deliberate. The two colour rows sit directly under the preview because they are
+  the only controls with no preview of their own and the only ones anybody scrubs back and
+  forth through: ten swatches judged against each other. Put them further down, as they were,
+  and the preview is scrolled off the top at the exact moment it is being used. Date, typeface
+  and caption are set once and each shows its value in the row, and the typeface dialog
+  previews every font itself, so none of them need the preview in view.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="28dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="48dp">
+
+        <TextView
+            style="@style/Display"
+            android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/summary"
+            style="@style/Subtitle"
+            android:layout_marginTop="7dp" />
+
+        <!--
+          The preview is the one thing on this page worth looking at, so it gets the only
+          light on it: a gold bloom behind the device, large enough to read as a glow around
+          the case rather than as a shape of its own.
+        -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <View
+                android:layout_width="340dp"
+                android:layout_height="340dp"
+                android:layout_gravity="center"
+                android:background="@drawable/preview_glow"
+                android:importantForAccessibility="no" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/preview_bezel"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/preview"
+                    android:layout_width="176dp"
+                    android:layout_height="381dp"
+                    android:background="@drawable/preview_screen"
+                    android:contentDescription="@string/preview_desc"
+                    android:scaleType="fitCenter" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <TextView
+            style="@style/SectionLabel"
+            android:text="@string/section_number_colour" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!--
+              The row runs past its edge, so it fades out there. Cut square, a half swatch
+              against the Custom button reads as a clipping bug rather than as more to come.
+            -->
+            <HorizontalScrollView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fadingEdgeLength="32dp"
+                android:requiresFadingEdge="horizontal"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/ink_swatches"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/ink_custom"
+                style="@style/GhostButton"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/a11y_custom_ink"
+                android:text="@string/custom" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SectionLabel"
+            android:text="@string/section_background_colour" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <HorizontalScrollView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fadingEdgeLength="32dp"
+                android:requiresFadingEdge="horizontal"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/bg_swatches"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/bg_custom"
+                style="@style/GhostButton"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/a11y_custom_bg"
+                android:text="@string/custom" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/contrast_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/warning_bg"
+            android:breakStrategy="balanced"
+            android:hyphenationFrequency="none"
+            android:lineSpacingExtra="3dp"
+            android:padding="14dp"
+            android:text="@string/low_contrast"
+            android:textColor="@color/warning"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <!--
+          The three rows below each carry a spoken description built in MainActivity, which
+          already names the section. These labels are left visible but silent so a screen
+          reader is not made to say it twice.
+
+          No trailing chevron on any of them: a settings row that shows its current value and
+          lights up under the finger is how Android says "this opens something". A chevron
+          there is an iOS habit, and three of them is three pieces of chrome earning nothing.
+        -->
+        <TextView
+            style="@style/SectionLabel"
+            android:importantForAccessibility="no"
+            android:text="@string/section_countdown" />
+
+        <LinearLayout
+            android:id="@+id/end_date_row"
+            style="@style/Row">
+
+            <TextView
+                android:id="@+id/end_date_value"
+                style="@style/RowValue"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/end_date_hint"
+                style="@style/RowValue"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/text_muted"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SectionLabel"
+            android:importantForAccessibility="no"
+            android:text="@string/section_typeface" />
+
+        <LinearLayout
+            android:id="@+id/style_row"
+            style="@style/Row">
+
+            <TextView
+                android:id="@+id/style_value"
+                style="@style/RowValue"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/style_sample"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:fontFeatureSettings="tnum, lnum"
+                android:importantForAccessibility="no"
+                android:textColor="@color/text_primary"
+                android:textSize="26sp" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SectionLabel"
+            android:importantForAccessibility="no"
+            android:text="@string/section_label_text" />
+
+        <LinearLayout
+            android:id="@+id/caption_row"
+            style="@style/Row">
+
+            <TextView
+                android:id="@+id/caption_value"
+                style="@style/RowValue"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/apply_now"
+            style="@style/PrimaryButton"
+            android:layout_marginTop="36dp"
+            android:text="@string/set_now" />
+
+        <LinearLayout
+            android:id="@+id/daily_row"
+            style="@style/Row"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/RowValue"
+                    android:text="@string/update_daily" />
+
+                <TextView
+                    style="@style/RowNote"
+                    android:text="@string/update_daily_note" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/daily_switch"
+                style="@style/Widget.DaysLeft.Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:importantForAccessibility="no" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
